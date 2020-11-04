@@ -10,7 +10,7 @@ public class HelloWorldController {
 
     @GetMapping()
     public String helloWorld(){
-        return "Hello World From Temperature APP!";
+        return "Hello World From Temperature APP! EDITED!";
     }
 
 }
