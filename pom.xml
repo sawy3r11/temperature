@@ -67,7 +67,7 @@
                             </outputDirectory >
                             <resources>
                                 <resource>
-                                    <directory>./temperature-dashboard/dist/temperature-control/</directory>
+                                    <directory>../temperature/dist/temperature-control/</directory>
                                 </resource>
                             </resources>
                         </configuration>
