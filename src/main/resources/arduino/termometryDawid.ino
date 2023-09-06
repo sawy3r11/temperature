@@ -13,6 +13,7 @@ long wifiStrength = 0;
 const int REQEST_DELAY=5;
 int reqCounter = 0;
 int httpResult = -1;
+WiFiClient wifiClient;
 /*-------//WIFI-----------*/
 
 #include <OneWire.h>
@@ -37,7 +38,7 @@ float T4 = 0.0;
 /*----------DISPLAY------*/
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27,20,4);
 String lcdLabel_1 = "Conn to WIFI...";
 String lcdLabel_2 = "";
 /*----------//DISPLAY------*/
@@ -47,7 +48,8 @@ bool connectedToWifi = false;
 
 void setup() {
   Serial.begin(9600);
-  lcd.begin();
+  lcd.init();
+  lcd.backlight();
 
   display("Conn to WIFI...", "00000000000");
   WiFi.begin(ssid,password);
@@ -69,10 +71,12 @@ void loop() {
       break;
     case 2:
       sensors.requestTemperatures();
-      T1 = sensors.getTempCByIndex(0); // GLOWICA
-      T2 = sensors.getTempCByIndex(1); // ZBIORNIK
+
+      T1 = sensors.getTempCByIndex(3); // GLOWICA
+      T2 = sensors.getTempCByIndex(0); // ZBIORNIK
       T3 = sensors.getTempCByIndex(2); // 10-POLKA
-      T4 = sensors.getTempCByIndex(3); // FAJKA
+      T4 = sensors.getTempCByIndex(1); // FAJKA
+
       lcdLabel_1 = ""+ String((int)T4) +" "+ String(T1)+" ["+ String(T3)+"]";
       Serial.println(lcdLabel_1);
       if(WiFi.status() == WL_CONNECTED){
@@ -115,7 +119,7 @@ int sendAddTemperatureRequest( float t1, float t2, float t3, float t4 ){
 
   HTTPClient http2;
   String mapping = SERVER2+"/api/sensor/temperature/1";
-  http2.begin(mapping);
+  http2.begin(wifiClient, mapping);
   http2.addHeader("Content-Type", "application/json");
   int responseCode = http2.POST(json);
   http2.end();
