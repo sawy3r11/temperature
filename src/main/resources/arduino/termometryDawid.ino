@@ -69,10 +69,12 @@ void loop() {
       break;
     case 2:
       sensors.requestTemperatures();
-      T1 = sensors.getTempCByIndex(0); // GLOWICA
-      T2 = sensors.getTempCByIndex(1); // ZBIORNIK
+
+      T1 = sensors.getTempCByIndex(1); // GLOWICA
+      T2 = sensors.getTempCByIndex(3); // ZBIORNIK
       T3 = sensors.getTempCByIndex(2); // 10-POLKA
-      T4 = sensors.getTempCByIndex(3); // FAJKA
+      T4 = sensors.getTempCByIndex(0); // FAJKA
+
       lcdLabel_1 = ""+ String((int)T4) +" "+ String(T1)+" ["+ String(T3)+"]";
       Serial.println(lcdLabel_1);
       if(WiFi.status() == WL_CONNECTED){
